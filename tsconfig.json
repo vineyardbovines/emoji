@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "lib": ["ES2022"],
+    "types": [],
+    "baseUrl": ".",
+    "paths": {
+      "@vineyardbovines/emoji": ["./src/index.ts"],
+      "@vineyardbovines/emoji/sheet": ["./src/sheet.ts"],
+      "@vineyardbovines/emoji/data": ["./src/data.ts"]
+    }
+  },
+  "include": ["src"]
+}

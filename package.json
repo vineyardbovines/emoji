@@ -1,0 +1,129 @@
+{
+  "name": "@vineyardbovines/emoji",
+  "version": "0.0.1",
+  "description": "React Native emoji picker and dataset.",
+  "private": true,
+  "license": "MIT",
+  "author": "vineyardbovines",
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
+  "types": "lib/typescript/index.d.ts",
+  "react-native": "src/index.ts",
+  "source": "src/index.ts",
+  "files": [
+    "src",
+    "lib",
+    "LICENSE",
+    "README.md",
+    "!**/__tests__",
+    "!**/.DS_Store"
+  ],
+  "workspaces": [
+    "example"
+  ],
+  "exports": {
+    ".": {
+      "types": "./lib/typescript/index.d.ts",
+      "react-native": "./src/index.ts",
+      "import": "./lib/module/index.js",
+      "require": "./lib/commonjs/index.js"
+    },
+    "./sheet": {
+      "types": "./lib/typescript/sheet.d.ts",
+      "react-native": "./src/sheet.ts",
+      "import": "./lib/module/sheet.js",
+      "require": "./lib/commonjs/sheet.js"
+    },
+    "./data": {
+      "types": "./lib/typescript/data.d.ts",
+      "react-native": "./src/data.ts",
+      "import": "./lib/module/data.js",
+      "require": "./lib/commonjs/data.js"
+    }
+  },
+  "scripts": {
+    "build": "bob build",
+    "typecheck": "tsc --noEmit",
+    "format": "biome check --write --unsafe --no-errors-on-unmatched --files-ignore-unknown=true .",
+    "format:ci": "biome ci --no-errors-on-unmatched --files-ignore-unknown=true .",
+    "emoji:generate": "bun scripts/generate-emoji.ts && bun run format",
+    "prepare": "bob build"
+  },
+  "dependencies": {
+    "fuse.js": "^7.0.0"
+  },
+  "peerDependencies": {
+    "@expo/vector-icons": ">=15",
+    "@gorhom/bottom-sheet": ">=5",
+    "@shopify/flash-list": ">=2",
+    "expo-blur": ">=55",
+    "expo-glass-effect": ">=55",
+    "expo-haptics": ">=55",
+    "expo-symbols": ">=1",
+    "react": ">=19",
+    "react-native": ">=0.83",
+    "react-native-gesture-handler": ">=2",
+    "react-native-reanimated": ">=4",
+    "react-native-safe-area-context": ">=5"
+  },
+  "peerDependenciesMeta": {
+    "@expo/vector-icons": {
+      "optional": true
+    },
+    "@gorhom/bottom-sheet": {
+      "optional": true
+    },
+    "expo-blur": {
+      "optional": true
+    },
+    "expo-glass-effect": {
+      "optional": true
+    },
+    "expo-haptics": {
+      "optional": true
+    },
+    "expo-symbols": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.11",
+    "@gorhom/bottom-sheet": "~5.2.9",
+    "@shopify/flash-list": "2.0.2",
+    "@types/react": "~19.2.10",
+    "expo-blur": "^55.0.14",
+    "expo-glass-effect": "^55.0.10",
+    "expo-haptics": "^55.0.14",
+    "react": "~19.2.0",
+    "react-native": "~0.83.0",
+    "react-native-builder-bob": "^0.37.0",
+    "react-native-safe-area-context": "^5.6.0",
+    "react-native-gesture-handler": "~2.30.0",
+    "react-native-reanimated": "~4.2.1",
+    "typescript": "^5.6.0"
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      [
+        "commonjs",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
+  }
+}

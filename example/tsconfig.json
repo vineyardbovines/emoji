@@ -1,0 +1,12 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@vineyardbovines/emoji": ["../src/index.ts"],
+      "@vineyardbovines/emoji/sheet": ["../src/sheet.ts"],
+      "@vineyardbovines/emoji/data": ["../src/data.ts"]
+    }
+  }
+}

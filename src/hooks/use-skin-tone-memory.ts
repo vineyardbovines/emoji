@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { type EmojiPickerStorage, STORAGE_KEYS } from "../lib/storage";
 
 function parse(raw: string | null): Record<string, string> {
@@ -18,8 +18,6 @@ function parse(raw: string | null): Record<string, string> {
 
 export function useSkinToneMemory(storage?: EmojiPickerStorage) {
   const [memory, setMemory] = useState<Record<string, string>>({});
-  const storageRef = useRef(storage);
-  storageRef.current = storage;
 
   useEffect(() => {
     if (!storage) return;
@@ -32,13 +30,13 @@ export function useSkinToneMemory(storage?: EmojiPickerStorage) {
     };
   }, [storage]);
 
-  const remember = useCallback((base: string, variant: string) => {
+  const remember = (base: string, variant: string) => {
     setMemory((prev) => {
       const next = { ...prev, [base]: variant };
-      storageRef.current?.set(STORAGE_KEYS.skinTones, JSON.stringify(next));
+      storage?.set(STORAGE_KEYS.skinTones, JSON.stringify(next));
       return next;
     });
-  }, []);
+  };
 
   return { memory, remember };
 }

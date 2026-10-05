@@ -60,7 +60,7 @@
     "expo-glass-effect": ">=55",
     "expo-haptics": ">=55",
     "expo-symbols": ">=1",
-    "react": ">=19",
+    "react": ">=19.1",
     "react-native": ">=0.83",
     "react-native-gesture-handler": ">=2",
     "react-native-reanimated": ">=4",
@@ -91,15 +91,16 @@
     "@gorhom/bottom-sheet": "~5.2.9",
     "@shopify/flash-list": "2.0.2",
     "@types/react": "~19.2.10",
+    "babel-plugin-react-compiler": "^1.0.0",
     "expo-blur": "^55.0.14",
     "expo-glass-effect": "^55.0.10",
     "expo-haptics": "^55.0.14",
     "react": "~19.2.0",
     "react-native": "~0.83.0",
     "react-native-builder-bob": "^0.37.0",
-    "react-native-safe-area-context": "^5.6.0",
     "react-native-gesture-handler": "~2.30.0",
     "react-native-reanimated": "~4.2.1",
+    "react-native-safe-area-context": "^5.6.0",
     "typescript": "^5.6.0"
   },
   "react-native-builder-bob": {
@@ -109,13 +110,15 @@
       [
         "commonjs",
         {
-          "esm": true
+          "esm": true,
+          "configFile": true
         }
       ],
       [
         "module",
         {
-          "esm": true
+          "esm": true,
+          "configFile": true
         }
       ],
       [

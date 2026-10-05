@@ -7,7 +7,7 @@ import { Surface } from "./surface";
 
 export type SearchBarIconProps = { name: "search" | "clear"; size: number; color: string };
 
-type Props = {
+type SearchBarProps = {
   value: string;
   placeholder: string;
   onChangeText: (v: string) => void;
@@ -27,13 +27,13 @@ export function SearchBar({
   IconComponent,
   surfaceMode,
   colors,
-}: Props) {
+}: SearchBarProps) {
   const inputRef = useRef<TextInput>(null);
   const Input = (InputComponent ?? TextInput) as ElementType;
   const Icon = IconComponent ?? DefaultSearchIcon;
 
   return (
-    <Surface mode={surfaceMode} style={styles.surface}>
+    <Surface mode={surfaceMode} backgroundColor="rgba(255,255,255,0.85)" style={styles.surface}>
       <View style={styles.row}>
         <View style={styles.leading}>
           <Icon name="search" size={18} color={colors.textSecondary} />

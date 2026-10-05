@@ -1,30 +1,35 @@
-import { useCallback } from "react";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { type EmojiEntry, SKIN_TONE_VARIANTS } from "../data";
-import { mediumImpact } from "../lib/haptics";
+import { type HapticStyle, impact } from "../lib/haptics";
 
 type Position = { x: number; y: number; width: number };
 
-type Props = {
+type EmojiCellProps = {
   entry: EmojiEntry;
   cellSize: number;
+  longPressDurationMs: number;
+  hapticStyle: HapticStyle;
   onSelect: (emoji: string) => void;
   onLongPress: (emoji: string, position: Position) => void;
 };
 
-export function EmojiCell({ entry, cellSize, onSelect, onLongPress }: Props) {
+export function EmojiCell({
+  entry,
+  cellSize,
+  longPressDurationMs,
+  hapticStyle,
+  onSelect,
+  onLongPress,
+}: EmojiCellProps) {
   const hasTones = entry.emoji in SKIN_TONE_VARIANTS;
 
-  const handlePress = useCallback(() => {
-    onSelect(entry.emoji);
-  }, [entry.emoji, onSelect]);
-
   const longPress = Gesture.LongPress()
-    .minDuration(350)
+    .minDuration(longPressDurationMs)
     .enabled(hasTones)
+    .runOnJS(true)
     .onStart((e) => {
-      mediumImpact();
+      impact(hapticStyle);
       onLongPress(entry.emoji, {
         x: e.absoluteX - e.x,
         y: e.absoluteY - e.y,
@@ -32,15 +37,19 @@ export function EmojiCell({ entry, cellSize, onSelect, onLongPress }: Props) {
       });
     });
 
+  const tap = Gesture.Tap()
+    .runOnJS(true)
+    .onStart(() => {
+      onSelect(entry.emoji);
+    });
+
+  const gesture = Gesture.Exclusive(longPress, tap);
+
   return (
-    <GestureDetector gesture={longPress}>
-      <Pressable
-        onPress={handlePress}
-        hitSlop={2}
-        style={[styles.cell, { width: cellSize, height: cellSize }]}
-      >
+    <GestureDetector gesture={gesture}>
+      <View style={[styles.cell, { width: cellSize, height: cellSize }]}>
         <Text style={{ fontSize: cellSize * 0.66 }}>{entry.emoji}</Text>
-      </Pressable>
+      </View>
     </GestureDetector>
   );
 }

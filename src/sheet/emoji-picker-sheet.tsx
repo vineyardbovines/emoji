@@ -6,10 +6,11 @@ import {
   BottomSheetTextInput,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { Keyboard, StyleSheet } from "react-native";
 import { Surface } from "../components/surface";
 import { EmojiPicker, type EmojiPickerProps } from "../emoji-picker";
+import { useEmojiPickerColors } from "../lib/colors";
 
 export type EmojiPickerSheetHandle = {
   present: () => void;
@@ -21,13 +22,16 @@ export type EmojiPickerSheetProps = Omit<EmojiPickerProps, "SearchInputComponent
   onDismiss?: () => void;
 };
 
+const DEFAULT_SNAP_POINTS: (string | number)[] = ["56%"];
+
 export const EmojiPickerSheet = forwardRef<EmojiPickerSheetHandle, EmojiPickerSheetProps>(
   function EmojiPickerSheet(
     { snapPoints, onDismiss, onRequestClose, variant = "glass", ...pickerProps },
     ref
   ) {
     const sheetRef = useRef<BottomSheetModal>(null);
-    const resolvedSnapPoints = useMemo(() => snapPoints ?? ["56%"], [snapPoints]);
+    const colors = useEmojiPickerColors();
+    const resolvedSnapPoints = snapPoints ?? DEFAULT_SNAP_POINTS;
 
     useImperativeHandle(
       ref,
@@ -45,24 +49,18 @@ export const EmojiPickerSheet = forwardRef<EmojiPickerSheetHandle, EmojiPickerSh
       return () => sub.remove();
     }, []);
 
-    const handleRequestClose = useCallback(() => {
+    const handleRequestClose = () => {
       Keyboard.dismiss();
       sheetRef.current?.dismiss();
       onRequestClose?.();
-    }, [onRequestClose]);
+    };
 
-    const renderBackdrop = useCallback(
-      (props: BottomSheetBackdropProps) => (
-        <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.3} />
-      ),
-      []
+    const renderBackdrop = (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} opacity={0.3} />
     );
 
-    const renderBackground = useCallback(
-      (props: BottomSheetBackgroundProps) => (
-        <Surface mode={variant} style={[props.style, styles.background]} />
-      ),
-      [variant]
+    const renderBackground = (props: BottomSheetBackgroundProps) => (
+      <Surface mode={variant} style={[props.style, styles.background]} />
     );
 
     return (
@@ -71,9 +69,10 @@ export const EmojiPickerSheet = forwardRef<EmojiPickerSheetHandle, EmojiPickerSh
         snapPoints={resolvedSnapPoints}
         onDismiss={onDismiss}
         enablePanDownToClose
+        enableContentPanningGesture={false}
         backdropComponent={renderBackdrop}
         backgroundComponent={renderBackground}
-        handleIndicatorStyle={styles.handle}
+        handleIndicatorStyle={[styles.handle, { backgroundColor: colors.handle }]}
         keyboardBehavior="extend"
         keyboardBlurBehavior="restore"
         android_keyboardInputMode="adjustResize"
@@ -98,7 +97,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   handle: {
-    backgroundColor: "#C7C7CC",
     width: 36,
   },
   sheetBody: {

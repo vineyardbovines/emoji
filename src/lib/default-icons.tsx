@@ -116,7 +116,5 @@ export function DefaultSearchIcon({ name, size, color }: SearchBarIconProps): Re
     const { Ionicons } = vectorIcons;
     return <Ionicons name={SEARCH_IONICONS[name]} size={size} color={color} />;
   }
-  return (
-    <Text style={{ fontSize: size, color }}>{name === "search" ? "🔍" : "✕"}</Text>
-  );
+  return <Text style={{ fontSize: size, color }}>{name === "search" ? "🔍" : "✕"}</Text>;
 }

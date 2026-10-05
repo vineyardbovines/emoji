@@ -65,12 +65,20 @@ export function Surface({ mode, backgroundColor, tint = "auto", style, children 
   if (blur) {
     const { BlurView } = blur;
     const blurTint = tint === "auto" ? "default" : tint;
+    const androidOverlay =
+      Platform.OS === "android"
+        ? {
+            backgroundColor:
+              backgroundColor ??
+              (tint === "dark" ? "rgba(28,28,30,0.9)" : "rgba(242,242,247,0.95)"),
+          }
+        : null;
     return (
       <BlurView
-        intensity={50}
+        intensity={Platform.OS === "android" ? 100 : 90}
         tint={blurTint}
         experimentalBlurMethod={Platform.OS === "android" ? "dimezisBlurView" : undefined}
-        style={style}
+        style={[style, androidOverlay]}
       >
         {children}
       </BlurView>
@@ -79,15 +87,15 @@ export function Surface({ mode, backgroundColor, tint = "auto", style, children 
 
   if (Platform.OS === "web") {
     const webStyle = {
-      backdropFilter: "blur(20px)",
-      WebkitBackdropFilter: "blur(20px)",
-      backgroundColor: tint === "dark" ? "rgba(0,0,0,0.35)" : "rgba(255,255,255,0.45)",
+      backdropFilter: "blur(30px)",
+      WebkitBackdropFilter: "blur(30px)",
+      backgroundColor: tint === "dark" ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.7)",
     } as ViewStyle;
     return <View style={[webStyle, style]}>{children}</View>;
   }
 
   return (
-    <View style={[{ backgroundColor: backgroundColor ?? "rgba(255,255,255,0.9)" }, style]}>
+    <View style={[{ backgroundColor: backgroundColor ?? "rgba(255,255,255,0.97)" }, style]}>
       {children}
     </View>
   );

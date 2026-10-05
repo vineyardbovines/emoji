@@ -1,7 +1,7 @@
-import { useMemo } from "react";
 import { Pressable, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import Animated, { ZoomIn } from "react-native-reanimated";
 import { SKIN_TONE_VARIANTS } from "../data";
+import { useEmojiPickerColors } from "../lib/colors";
 import { Surface, type SurfaceMode } from "./surface";
 
 const VARIANT_FONT_SIZE = 34;
@@ -10,7 +10,7 @@ const PADDING = 6;
 const ARROW_SIZE = 8;
 const SCREEN_PADDING = 12;
 
-type Props = {
+type SkinTonePopoverProps = {
   baseEmoji: string;
   anchor: { x: number; y: number; width: number };
   surfaceMode: SurfaceMode;
@@ -18,12 +18,10 @@ type Props = {
   onDismiss: () => void;
 };
 
-export function SkinTonePopover({ baseEmoji, anchor, surfaceMode, onSelect, onDismiss }: Props) {
+export function SkinTonePopover({ baseEmoji, anchor, surfaceMode, onSelect, onDismiss }: SkinTonePopoverProps) {
   const { width: screenW } = useWindowDimensions();
-  const variants = useMemo(
-    () => [baseEmoji, ...(SKIN_TONE_VARIANTS[baseEmoji] ?? [])],
-    [baseEmoji]
-  );
+  const colors = useEmojiPickerColors();
+  const variants = [baseEmoji, ...(SKIN_TONE_VARIANTS[baseEmoji] ?? [])];
 
   const popWidth = variants.length * ITEM_SIZE + PADDING * 2;
   const popHeight = ITEM_SIZE + PADDING * 2;
@@ -50,7 +48,7 @@ export function SkinTonePopover({ baseEmoji, anchor, surfaceMode, onSelect, onDi
             ))}
           </View>
         </Surface>
-        <View style={[styles.arrow, { left: arrowLeft }]} />
+        <View style={[styles.arrow, { left: arrowLeft, borderTopColor: colors.surfaceTop }]} />
       </Animated.View>
     </Pressable>
   );
@@ -77,9 +75,13 @@ const styles = StyleSheet.create({
   arrow: {
     position: "absolute",
     bottom: -ARROW_SIZE,
-    width: ARROW_SIZE * 2,
-    height: ARROW_SIZE,
-    backgroundColor: "rgba(255,255,255,0.95)",
-    transform: [{ rotate: "45deg" }],
+    width: 0,
+    height: 0,
+    borderStyle: "solid",
+    borderLeftWidth: ARROW_SIZE,
+    borderRightWidth: ARROW_SIZE,
+    borderTopWidth: ARROW_SIZE,
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
   },
 });

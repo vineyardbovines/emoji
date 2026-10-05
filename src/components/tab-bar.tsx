@@ -3,11 +3,12 @@ import { Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { EmojiPickerColors } from "../lib/colors";
 import { DefaultTabIcon } from "../lib/default-icons";
-import { CATEGORY_ORDER, type CategoryName } from "../lib/types";
+import type { CategoryName } from "../lib/types";
 
 export type TabIconProps = { category: CategoryName; active: boolean; size: number; color: string };
 
-type Props = {
+type TabBarProps = {
+  categories: CategoryName[];
   active: CategoryName;
   onSelect: (cat: CategoryName) => void;
   colors: EmojiPickerColors;
@@ -15,13 +16,20 @@ type Props = {
   renderIcon?: (category: CategoryName, active: boolean) => ReactNode;
 };
 
-export function TabBar({ active, onSelect, colors, IconComponent, renderIcon }: Props) {
+export function TabBar({
+  categories,
+  active,
+  onSelect,
+  colors,
+  IconComponent,
+  renderIcon,
+}: TabBarProps) {
   const insets = useSafeAreaInsets();
   const Icon = IconComponent ?? DefaultTabIcon;
 
   return (
     <View style={[styles.row, { paddingBottom: Math.max(insets.bottom, 12) + 8 }]}>
-      {CATEGORY_ORDER.map((cat) => {
+      {categories.map((cat) => {
         const isActive = cat === active;
         return (
           <Pressable

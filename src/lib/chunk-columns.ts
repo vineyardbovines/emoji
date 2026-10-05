@@ -1,4 +1,5 @@
 import { EMOJI_DATA, type EmojiEntry } from "../data";
+import { hasSkinToneCodepoint } from "./skin-tones";
 import { CATEGORY_ORDER, type CategoryName, type ChunkedData, type Column, ROWS } from "./types";
 
 const UNICODE_TO_CATEGORY: Record<string, CategoryName> = {
@@ -18,8 +19,9 @@ function buildBaseMap(): Map<CategoryName, EmojiEntry[]> {
   for (const unicodeCat of EMOJI_DATA) {
     const mapped = UNICODE_TO_CATEGORY[unicodeCat.name];
     if (!mapped) continue;
+    const bases = unicodeCat.emojis.filter((e) => !hasSkinToneCodepoint(e.emoji));
     const existing = map.get(mapped) ?? [];
-    map.set(mapped, existing.concat(unicodeCat.emojis));
+    map.set(mapped, existing.concat(bases));
   }
   return map;
 }
@@ -51,18 +53,18 @@ export function chunkColumns(
   skinToneMemory: Record<string, string>
 ): ChunkedData {
   const columns: Column[] = [];
-  const sectionOffsets = {} as Record<CategoryName, number>;
+  const sectionOffsets: Partial<Record<CategoryName, number>> = {};
+  const visibleCategories: CategoryName[] = [];
 
   for (const cat of CATEGORY_ORDER) {
+    if (cat === "Recents" && recents.length === 0) continue;
+
     sectionOffsets[cat] = columns.length;
+    visibleCategories.push(cat);
 
     if (cat === "Recents") {
-      if (recents.length === 0) {
-        columns.push({ kind: "empty-recents" });
-      } else {
-        const entries: EmojiEntry[] = recents.map((emoji) => ({ emoji, name: emoji }));
-        columns.push(...toColumns(entries, cat));
-      }
+      const entries: EmojiEntry[] = recents.map((emoji) => ({ emoji, name: emoji }));
+      columns.push(...toColumns(entries, cat));
       continue;
     }
 
@@ -70,5 +72,5 @@ export function chunkColumns(
     columns.push(...toColumns(entries, cat));
   }
 
-  return { columns, sectionOffsets };
+  return { columns, sectionOffsets, visibleCategories };
 }

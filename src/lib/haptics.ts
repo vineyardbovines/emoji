@@ -1,6 +1,8 @@
+export type HapticStyle = "light" | "medium" | "heavy" | "none";
+
 type HapticsModule = {
   impactAsync: (style: unknown) => Promise<void>;
-  ImpactFeedbackStyle: { Medium: unknown };
+  ImpactFeedbackStyle: { Light: unknown; Medium: unknown; Heavy: unknown };
 };
 
 let cached: HapticsModule | null | undefined;
@@ -15,8 +17,15 @@ function load(): HapticsModule | null {
   return cached;
 }
 
-export function mediumImpact(): void {
+export function impact(style: HapticStyle): void {
+  if (style === "none") return;
   const m = load();
   if (!m) return;
-  void m.impactAsync(m.ImpactFeedbackStyle.Medium);
+  const mapped =
+    style === "light"
+      ? m.ImpactFeedbackStyle.Light
+      : style === "heavy"
+        ? m.ImpactFeedbackStyle.Heavy
+        : m.ImpactFeedbackStyle.Medium;
+  void m.impactAsync(mapped);
 }

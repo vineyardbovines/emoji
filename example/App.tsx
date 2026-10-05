@@ -1,9 +1,6 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import type { EmojiPickerStorage } from "@vineyardbovines/emoji";
-import {
-  EmojiPickerSheet,
-  type EmojiPickerSheetHandle,
-} from "@vineyardbovines/emoji/sheet";
+import { EmojiPickerSheet, type EmojiPickerSheetHandle } from "@vineyardbovines/emoji/sheet";
 import { StatusBar } from "expo-status-bar";
 import { useMemo, useRef, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
@@ -34,10 +31,7 @@ export default function App() {
             <Text style={styles.hint}>
               {selected ? "Nice pick" : "Tap the button to open the picker"}
             </Text>
-            <Pressable
-              style={styles.button}
-              onPress={() => sheetRef.current?.present()}
-            >
+            <Pressable style={styles.button} onPress={() => sheetRef.current?.present()}>
               <Text style={styles.buttonText}>Open emoji picker</Text>
             </Pressable>
           </View>

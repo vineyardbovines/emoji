@@ -12,12 +12,17 @@ bun add @vineyardbovines/emoji
 ### Peer dependencies
 
 Required:
-- `react` ≥ 19
+- `react` ≥ 19.1
 - `react-native` ≥ 0.83
 - `@shopify/flash-list` ≥ 2
 - `react-native-safe-area-context` ≥ 5
 - `react-native-gesture-handler` ≥ 2
 - `react-native-reanimated` ≥ 4
+
+> **Built for React Compiler.** The library ships output precompiled with
+> `babel-plugin-react-compiler` targeting React 19. You don't need to enable
+> the compiler in your own app for this library to work, but if you do, both
+> your code and ours run with automatic memoization — no extra setup needed.
 
 Optional (needed for specific features):
 - `@gorhom/bottom-sheet` ≥ 5 — import `@vineyardbovines/emoji/sheet`

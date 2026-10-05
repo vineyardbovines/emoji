@@ -5,6 +5,8 @@ export type EmojiPickerColors = {
   textSecondary: string;
   border: string;
   placeholder: string;
+  surfaceTop: string;
+  handle: string;
 };
 
 const LIGHT: EmojiPickerColors = {
@@ -12,6 +14,8 @@ const LIGHT: EmojiPickerColors = {
   textSecondary: "#6B7280",
   border: "rgba(0,0,0,0.1)",
   placeholder: "rgba(0,0,0,0.45)",
+  surfaceTop: "rgba(255,255,255,0.95)",
+  handle: "#C7C7CC",
 };
 
 const DARK: EmojiPickerColors = {
@@ -19,6 +23,8 @@ const DARK: EmojiPickerColors = {
   textSecondary: "#A1A1AA",
   border: "rgba(255,255,255,0.12)",
   placeholder: "rgba(255,255,255,0.45)",
+  surfaceTop: "rgba(44,44,46,0.95)",
+  handle: "#48484A",
 };
 
 export function useEmojiPickerColors(): EmojiPickerColors {

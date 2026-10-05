@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { type EmojiPickerStorage, RECENTS_LIMIT, STORAGE_KEYS } from "../lib/storage";
 
 function parse(raw: string | null): string[] {
@@ -11,34 +11,32 @@ function parse(raw: string | null): string[] {
   }
 }
 
-export function useRecents(storage?: EmojiPickerStorage) {
+export function useRecents(storage?: EmojiPickerStorage, limit: number = RECENTS_LIMIT) {
   const [recents, setRecents] = useState<string[]>([]);
-  const storageRef = useRef(storage);
-  storageRef.current = storage;
 
   useEffect(() => {
     if (!storage) return;
     let cancelled = false;
     storage.get(STORAGE_KEYS.recents).then((raw) => {
-      if (!cancelled) setRecents(parse(raw));
+      if (!cancelled) setRecents(parse(raw).slice(0, limit));
     });
     return () => {
       cancelled = true;
     };
-  }, [storage]);
+  }, [storage, limit]);
 
-  const push = useCallback((emoji: string) => {
+  const push = (emoji: string) => {
     setRecents((prev) => {
-      const next = [emoji, ...prev.filter((e) => e !== emoji)].slice(0, RECENTS_LIMIT);
-      storageRef.current?.set(STORAGE_KEYS.recents, JSON.stringify(next));
+      const next = [emoji, ...prev.filter((e) => e !== emoji)].slice(0, limit);
+      storage?.set(STORAGE_KEYS.recents, JSON.stringify(next));
       return next;
     });
-  }, []);
+  };
 
-  const clear = useCallback(() => {
+  const clear = () => {
     setRecents([]);
-    storageRef.current?.set(STORAGE_KEYS.recents, JSON.stringify([]));
-  }, []);
+    storage?.set(STORAGE_KEYS.recents, JSON.stringify([]));
+  };
 
   return { recents, push, clear };
 }

@@ -1,5 +1,6 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "@vineyardbovines/emoji",
@@ -11,6 +12,7 @@
         "@gorhom/bottom-sheet": "~5.2.9",
         "@shopify/flash-list": "2.0.2",
         "@types/react": "~19.2.10",
+        "babel-plugin-react-compiler": "^1.0.0",
         "expo-blur": "^55.0.14",
         "expo-glass-effect": "^55.0.10",
         "expo-haptics": "^55.0.14",
@@ -23,11 +25,13 @@
         "typescript": "^5.6.0",
       },
       "peerDependencies": {
+        "@expo/vector-icons": ">=15",
         "@gorhom/bottom-sheet": ">=5",
         "@shopify/flash-list": ">=2",
         "expo-blur": ">=55",
         "expo-glass-effect": ">=55",
         "expo-haptics": ">=55",
+        "expo-symbols": ">=1",
         "react": ">=19",
         "react-native": ">=0.83",
         "react-native-gesture-handler": ">=2",
@@ -35,10 +39,12 @@
         "react-native-safe-area-context": ">=5",
       },
       "optionalPeers": [
+        "@expo/vector-icons",
         "@gorhom/bottom-sheet",
         "expo-blur",
         "expo-glass-effect",
         "expo-haptics",
+        "expo-symbols",
       ],
     },
     "example": {
